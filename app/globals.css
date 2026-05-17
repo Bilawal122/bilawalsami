@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+/* ============================================================
+   bilawalsami.vercel.app — brutalist-cyberpunk design system
+   Source of truth: docs/PRD.md §2
+   ============================================================ */
+
+@theme {
+  /* ---- palette (PRD §2.1) ---- */
+  --color-ink: #0a0a0a;
+  --color-bone: #f2efe8;
+  --color-ash: #6b6b6b;
+  --color-steel: #1a1a1a;
+  --color-hairline: #2a2a2a;
+  --color-signal: #e6ff00;
+  --color-signal-dim: #b8cc00;
+  --color-blood: #ff3d00;
+
+  /* ---- type scale (PRD §2.2) ---- */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --text-mono-sm: 0.8125rem;
+  --text-label: 0.6875rem;
+
+  /* ---- motion (PRD §2.4) ---- */
+  --ease-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-pop: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* kill default Tailwind colors so accidental classes fail loudly */
+  --color-red-*: initial;
+  --color-orange-*: initial;
+  --color-yellow-*: initial;
+  --color-amber-*: initial;
+  --color-lime-*: initial;
+  --color-green-*: initial;
+  --color-emerald-*: initial;
+  --color-teal-*: initial;
+  --color-cyan-*: initial;
+  --color-sky-*: initial;
+  --color-blue-*: initial;
+  --color-indigo-*: initial;
+  --color-violet-*: initial;
+  --color-purple-*: initial;
+  --color-fuchsia-*: initial;
+  --color-pink-*: initial;
+  --color-rose-*: initial;
+  --color-slate-*: initial;
+  --color-gray-*: initial;
+  --color-zinc-*: initial;
+  --color-neutral-*: initial;
+  --color-stone-*: initial;
+}
+
+/* ============================================================
+   base resets
+   ============================================================ */
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color: var(--color-bone);
+    color-scheme: dark;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* opt out of native smooth-scroll — Lenis handles it */
+    scroll-behavior: auto;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100svh;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+
+  /* visible focus everywhere (PRD §8) */
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* hide system cursor only where we render a custom one */
+  @media (pointer: fine) {
+    html.has-custom-cursor,
+    html.has-custom-cursor * {
+      cursor: none !important;
+    }
+  }
+
+  /* hairlines instead of soft borders */
+  hr {
+    border: 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  /* no rounded corners over 4px — brutalist */
+  button,
+  input,
+  textarea,
+  select {
+    border-radius: 0;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-signal);
+  }
+}
+
+/* ============================================================
+   utility components
+   ============================================================ */
+
+@layer components {
+  .label-mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .mono-sm {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono-sm);
+    letter-spacing: 0.02em;
+  }
+
+  .hairline {
+    border-color: var(--color-hairline);
+  }
+
+  /* a one-px top hairline divider between sections */
+  .section-rule {
+    border-top: 1px solid var(--color-hairline);
+  }
+}
+
+/* ============================================================
+   motion preferences (PRD §2.4 + §8)
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   print stylesheet — recruiter Cmd-P should yield a clean CV
+   ============================================================ */
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  /* drop decorative chrome */
+  [data-print-hide="true"],
+  canvas,
+  video,
+  iframe,
+  .grain-overlay,
+  .custom-cursor {
+    display: none !important;
+  }
+  a {
+    color: #000000 !important;
+    text-decoration: underline;
+  }
+  /* spell out hrefs after links so they survive print */
+  a[href^="http"]::after,
+  a[href^="mailto:"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #444;
+  }
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
