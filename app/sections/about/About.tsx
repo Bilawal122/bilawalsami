@@ -3,18 +3,85 @@ import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
 
 const meta = SECTIONS.find((s) => s.id === "about")!;
 
+interface Row {
+  label: string;
+  body: React.ReactNode;
+}
+
+const ROWS: Row[] = [
+  { label: "LOCATION", body: <>Manchester, UK</> },
+  {
+    label: "EDUCATION",
+    body: (
+      <>
+        Edge Hill University, BSc Computing (Software Engineering)
+        <br />
+        Predicted First Class Honours, graduating 2026
+        <br />
+        <span className="text-ash">
+          Selected coursework: ZeroMQ WSN simulation, Arduino pelican-crossing FSM with C + x86 NASM, CAP-theorem DBMS feasibility study
+        </span>
+      </>
+    ),
+  },
+  {
+    label: "STACK",
+    body: <>TypeScript · React · React Native · Next.js · Python · Postgres</>,
+  },
+  { label: "AI", body: <>Gemini · GPT · Claude · PyTorch · SHAP / LIME for XAI</> },
+  {
+    label: "RUNNING",
+    body: <>Seraphize Ltd — profitable Amazon FBA, UK + EU markets</>,
+  },
+  {
+    label: "APPLYING TO",
+    body: <>UKRI AI CDT (Cambridge / Manchester) PhD, XAI track</>,
+  },
+];
+
 export function About() {
   return (
     <section
       id={meta.anchor}
       aria-labelledby={`${meta.anchor}-label`}
-      className="section-rule relative min-h-[60svh] px-6 pt-20 pb-24"
+      className="section-rule relative px-6 pt-20 pb-28"
     >
       <div className="absolute left-6 top-6" id={`${meta.anchor}-label`}>
         <SectionLabel section={meta} total={SECTION_TOTAL} />
       </div>
-      <div className="mt-16">
-        <p className="text-ash mono-sm">[ ABOUT — phase 2 fills this ]</p>
+
+      <div className="mx-auto max-w-[1400px] mt-20 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
+        {/* left column — mono key/value list */}
+        <dl className="space-y-7">
+          {ROWS.map((row) => (
+            <div key={row.label} className="grid grid-cols-1 gap-2">
+              <dt className="label-mono text-ash">{row.label}</dt>
+              <dd className="mono-sm text-bone leading-[1.7]">{row.body}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {/* right column — body paragraphs */}
+        <div className="lg:col-span-2 space-y-7 max-w-[58ch]">
+          <p
+            className="text-bone"
+            style={{ fontSize: "1.125rem", lineHeight: 1.55 }}
+          >
+            I build full products solo, end to end. Auth, schema, AI pipelines, payments, the UI — all of it. Three of those products are live and used by real people. One is my dissertation, the other two are side projects that grew into apps with paying users.
+          </p>
+          <p
+            className="text-bone"
+            style={{ fontSize: "1.125rem", lineHeight: 1.55 }}
+          >
+            My dissertation surfaced a trust-calibration gap in how people use AI study tools: users felt more confident with AI-generated schedules but didn't actually retain more. That finding is what's pushing me toward XAI research in 2026.
+          </p>
+          <p
+            className="text-bone"
+            style={{ fontSize: "1.125rem", lineHeight: 1.55 }}
+          >
+            Outside of code: badminton, music production, building a company that funds my own runway.
+          </p>
+        </div>
       </div>
     </section>
   );

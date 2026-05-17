@@ -1,4 +1,6 @@
 import { SectionLabel } from "@/components/SectionLabel";
+import { StatusBadge } from "@/components/StatusBadge";
+import { MORE } from "@/lib/projects";
 import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
 
 const meta = SECTIONS.find((s) => s.id === "more")!;
@@ -8,13 +10,58 @@ export function More() {
     <section
       id={meta.anchor}
       aria-labelledby={`${meta.anchor}-label`}
-      className="section-rule relative min-h-[60svh] px-6 pt-20 pb-24"
+      className="section-rule relative px-6 pt-20 pb-28"
     >
       <div className="absolute left-6 top-6" id={`${meta.anchor}-label`}>
         <SectionLabel section={meta} total={SECTION_TOTAL} />
       </div>
-      <div className="mt-16">
-        <p className="text-ash mono-sm">[ MORE — phase 2 fills this ]</p>
+
+      <div className="mx-auto max-w-[1600px] mt-20">
+        <ul
+          className="grid gap-px bg-hairline border hairline"
+          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(min(360px, 100%), 1fr))" }}
+        >
+          {MORE.map((card) => (
+            <li key={card.id} className="bg-ink">
+              <article className="group relative h-full p-6 flex flex-col gap-4 transition-colors hover:bg-steel">
+                <header className="flex items-start justify-between gap-4">
+                  <span className="label-mono text-ash">{card.id}</span>
+                  <StatusBadge statuses={card.statuses} />
+                </header>
+                <h3
+                  className="font-sans font-bold text-bone"
+                  style={{ fontSize: "1.75rem", letterSpacing: "-0.02em", lineHeight: 1.05 }}
+                >
+                  {card.name}
+                </h3>
+                <p className="text-bone" style={{ fontSize: "0.9375rem", lineHeight: 1.5 }}>
+                  {card.oneLiner}
+                </p>
+                <p className="mono-sm text-ash mt-auto">{card.stack}</p>
+                <div className="flex items-center justify-between gap-4">
+                  {card.href ? (
+                    <a
+                      href={card.href}
+                      target={card.href.startsWith("http") ? "_blank" : undefined}
+                      rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                      data-cursor="hover"
+                      className="label-mono text-bone hover:text-signal transition-colors underline-offset-4 hover:underline"
+                    >
+                      {card.hrefLabel ?? card.href} ↗
+                    </a>
+                  ) : (
+                    <span className="label-mono text-hairline">{card.note ?? ""}</span>
+                  )}
+                </div>
+                {/* edge highlight — border shifts to signal on hover */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 border border-transparent transition-colors duration-200 group-hover:border-signal"
+                />
+              </article>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
