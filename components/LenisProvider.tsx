@@ -42,19 +42,16 @@ export function LenisProvider({ children }: { children: ReactNode }) {
 
     const start = () => {
       const lenis = new Lenis({
-        duration: 1.1,
+        // shorter duration + lighter wheel multiplier feels snappier and
+        // reduces the rAF work-per-frame
+        duration: 0.85,
         easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
         smoothWheel: true,
+        wheelMultiplier: 0.9,
+        autoRaf: true,
       });
       lenisRef.current = lenis;
-      let raf = 0;
-      const tick = (time: number) => {
-        lenis.raf(time);
-        raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
       return () => {
-        cancelAnimationFrame(raf);
         lenis.destroy();
         lenisRef.current = null;
       };
