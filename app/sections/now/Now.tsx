@@ -3,6 +3,7 @@ import path from "node:path";
 import { SectionLabel } from "@/components/SectionLabel";
 import { NOW_BULLETS } from "@/lib/now";
 import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
+import { GitHubStrip } from "./GitHubStrip";
 
 const meta = SECTIONS.find((s) => s.id === "now")!;
 
@@ -50,6 +51,8 @@ export function Now() {
             </li>
           ))}
         </ul>
+
+        <GitHubStrip />
       </div>
     </section>
   );

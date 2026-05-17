@@ -50,6 +50,13 @@ export function TallyDemo() {
         remaining: json.remaining,
         limit: json.limit,
       });
+      if (typeof json.remaining === "number" && typeof json.limit === "number") {
+        window.dispatchEvent(
+          new CustomEvent("bilawalsami:tally-quota", {
+            detail: { remaining: json.remaining, limit: json.limit },
+          }),
+        );
+      }
     } catch {
       setState({ status: "error", error: "Network blip. Try again." });
     }

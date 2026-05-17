@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { CommandPalette } from "@/components/CommandPalette";
 import { Cursor } from "@/components/Cursor";
+import { DemoHud } from "@/components/DemoHud";
 import { Footer } from "@/components/Footer";
 import { GrainOverlay } from "@/components/GrainOverlay";
 import { LenisProvider } from "@/components/LenisProvider";
@@ -142,6 +144,8 @@ export default function RootLayout({
           <Nav />
           {children}
           <Footer />
+          <CommandPalette />
+          <DemoHud />
         </LenisProvider>
         <GrainOverlay />
         <Cursor />
