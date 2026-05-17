@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Cursor } from "@/components/Cursor";
+import { Footer } from "@/components/Footer";
+import { GrainOverlay } from "@/components/GrainOverlay";
+import { LenisProvider } from "@/components/LenisProvider";
+import { Nav } from "@/components/Nav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -93,10 +98,7 @@ const personJsonLd = {
     name: "Edge Hill University",
     sameAs: "https://www.edgehill.ac.uk/",
   },
-  sameAs: [
-    "https://github.com/Bilawal122",
-    // LinkedIn to be added when URL is confirmed
-  ],
+  sameAs: ["https://github.com/Bilawal122"],
   knowsAbout: [
     "Software engineering",
     "Artificial intelligence",
@@ -132,11 +134,17 @@ export default function RootLayout({
       <body className="bg-ink text-bone selection:bg-signal selection:text-ink">
         <a
           href="#section-000"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-ink focus:px-3 focus:py-2 focus:border focus:border-signal focus:text-signal label-mono"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-ink focus:px-3 focus:py-2 focus:border focus:border-signal focus:text-signal label-mono"
         >
           Skip to content
         </a>
-        {children}
+        <LenisProvider>
+          <Nav />
+          {children}
+          <Footer />
+        </LenisProvider>
+        <GrainOverlay />
+        <Cursor />
       </body>
     </html>
   );
