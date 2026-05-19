@@ -1,6 +1,4 @@
-import { Carousel } from "@/components/Carousel";
 import { StatusBadge } from "@/components/StatusBadge";
-import { SHOTS } from "@/lib/assets";
 import { FEATURED } from "@/lib/projects";
 import { TallyDemo } from "./TallyDemo";
 
@@ -45,8 +43,6 @@ export function Tally() {
 
       <div className="flex flex-col gap-10">
         <TallyDemo />
-
-        <Carousel shots={[...SHOTS.tally]} aspect="9 / 16" />
 
         <div>
           <p className="label-mono text-ash mb-4">WHAT I BUILT</p>

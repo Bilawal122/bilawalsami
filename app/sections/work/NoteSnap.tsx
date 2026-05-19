@@ -1,7 +1,4 @@
-import { Carousel } from "@/components/Carousel";
-import { Reel } from "@/components/Reel";
 import { StatusBadge } from "@/components/StatusBadge";
-import { REELS, SHOTS } from "@/lib/assets";
 import { FEATURED } from "@/lib/projects";
 
 const p = FEATURED.find((x) => x.id === "notesnap")!;
@@ -12,7 +9,6 @@ export function NoteSnap() {
       id={`work-${p.id}`}
       className="relative grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-16 px-6 py-16 section-rule"
     >
-      {/* sticky left header */}
       <header className="lg:sticky lg:top-24 lg:self-start flex flex-col gap-4">
         <p className="label-mono text-ash">
           <span className="text-bone">WORK</span> {p.index}
@@ -44,11 +40,12 @@ export function NoteSnap() {
         </div>
       </header>
 
-      {/* right column scrolls */}
       <div className="flex flex-col gap-10">
-        <Reel asset={REELS.notesnap} className="max-w-md mx-auto lg:mx-0" />
-
-        <Carousel shots={[...SHOTS.notesnap]} aspect="9 / 16" />
+        <div className="grid grid-cols-3 gap-px bg-hairline border hairline">
+          <Stat label="DISSERTATION" value="108pp" sub="predicted first" />
+          <Stat label="SOURCES" value="6" sub="PDF · DOCX · YT · URL · camera · PPTX" />
+          <Stat label="AI TOOLS" value="6" sub="flashcards · quizzes · tutor · SM-2" />
+        </div>
 
         <div>
           <p className="label-mono text-ash mb-4">WHAT I BUILT</p>
@@ -64,6 +61,16 @@ export function NoteSnap() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="border-t hairline pt-6">
+          <p className="label-mono text-ash mb-3">RESEARCH ANGLE</p>
+          <p className="text-bone" style={{ fontSize: "1rem", lineHeight: 1.6 }}>
+            Users rated AI-generated study schedules as <em>more confident</em> than human-made ones — but
+            their actual recall didn't improve. That trust-calibration gap is what's pushing the next
+            year of work toward XAI: how do we make AI in education{" "}
+            <em>visibly</em> trustworthy, not just persuasive.
+          </p>
         </div>
 
         <div className="flex flex-wrap gap-4 pt-2">
@@ -92,5 +99,20 @@ export function NoteSnap() {
         </div>
       </div>
     </article>
+  );
+}
+
+function Stat({ label, value, sub }: { label: string; value: string; sub: string }) {
+  return (
+    <div className="bg-ink p-5 flex flex-col gap-1">
+      <p className="label-mono text-hairline">{label}</p>
+      <p
+        className="font-sans font-bold text-bone tabular-nums"
+        style={{ fontSize: "2rem", letterSpacing: "-0.02em", lineHeight: 1 }}
+      >
+        {value}
+      </p>
+      <p className="label-mono text-ash">{sub}</p>
+    </div>
   );
 }

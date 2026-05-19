@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bilawalsami.vercel.app
 
-## Getting Started
+Personal site for Bilawal Ullah Sami. Brutalist-cyberpunk dev energy, an
+interactive Gemini-powered macro estimator, zero "AI personal site" clichés.
 
-First, run the development server:
+Full spec lives in [docs/PRD.md](docs/PRD.md).
+
+## Two branches
+
+This repo ships in two flavours so the deploy can go out today without
+waiting on media.
+
+| Branch | Purpose | What's different |
+|---|---|---|
+| `main` | **Ship now.** Recruiter-ready, no `ASSET PENDING` placeholders. Auto-deploys to Vercel. | Featured Work chapters render prose + stats + the working Tally demo + live links. No screenshot carousels, no demo reels, no pending-audio tags. |
+| `feat/full-media` | **Make it better.** All the carousels, reels, audio toggle, AriseCode chip player. Currently shows `ASSET PENDING` placeholders for anything not yet in `/public`. | Everything from the PRD. Park here while you film reels and export screenshots. |
+
+When the media in [`public/ASSETS.md`](public/ASSETS.md) lands, flip the
+relevant `status` flags in [`lib/assets.ts`](lib/assets.ts) on
+`feat/full-media`, then merge it into `main` to swap the deploy to the full
+version.
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack) + React 19 + TypeScript strict
+- Tailwind CSS v4 with CSS-first `@theme` palette
+- Motion v12 (formerly Framer Motion) + Lenis smooth scroll
+- `@google/generative-ai` (Gemini Flash) for the Tally demo
+- `@upstash/ratelimit` for the demo route
+- `embla-carousel-react` (only on `feat/full-media`)
+
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev        # http://localhost:3000 — slow, HMR overhead
+pnpm build      # production build
+pnpm start      # production server — what the deploy actually feels like
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Env (all server-side, all optional)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+GEMINI_API_KEY=                  # gemini flash for /api/tally-demo
+UPSTASH_REDIS_REST_URL=          # rate limit
+UPSTASH_REDIS_REST_TOKEN=
+GITHUB_TOKEN=                    # contributions strip (read scope)
+NEXT_PUBLIC_HERO_MODE=ascii      # ascii | webgl (only ascii implemented)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Without keys: the Tally demo falls back to a keyword-aware stub estimator
+and the GitHub strip renders a "pending token" caption — both fail
+gracefully so the site still ships.
 
-## Learn More
+## Easter eggs
 
-To learn more about Next.js, take a look at the following resources:
+- ⌘K — command palette (jump, copy email, open CV, open GitHub)
+- Type your name on the keyboard while the hero is visible — third line swaps
+- ↑ ↑ ↓ ↓ ← → ← → B A — Konami sequence flips the hero accent for 8 seconds
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Built by
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Bilawal Ullah Sami, in Manchester, with Next.js and a lot of Lenis.
+No analytics. No cookies. No tracking.

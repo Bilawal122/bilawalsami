@@ -1,8 +1,5 @@
-import { Carousel } from "@/components/Carousel";
 import { StatusBadge } from "@/components/StatusBadge";
-import { SHOTS } from "@/lib/assets";
 import { FEATURED } from "@/lib/projects";
-import { AriseCodeDemo } from "./AriseCodeDemo";
 
 const p = FEATURED.find((x) => x.id === "arisecode")!;
 
@@ -44,9 +41,34 @@ export function AriseCode() {
       </header>
 
       <div className="flex flex-col gap-10">
-        <AriseCodeDemo />
+        {/* live-app CTA in lieu of the pending iframe / playback */}
+        <a
+          href={p.liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor="hover"
+          className="group block border border-bone bg-signal text-ink p-8 hover:bg-signal-dim transition-colors"
+        >
+          <p className="label-mono text-ink/70 mb-3">TRY IT — IT&apos;S LIVE</p>
+          <p
+            className="font-sans font-bold leading-tight"
+            style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", letterSpacing: "-0.02em" }}
+          >
+            Describe a site → get a working
+            <br />
+            React + Tailwind preview in seconds.
+          </p>
+          <p className="label-mono mt-6 inline-flex items-center gap-2">
+            OPEN ARISECODE-ZETA.VERCEL.APP
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+          </p>
+        </a>
 
-        <Carousel shots={[...SHOTS.arisecode]} aspect="16 / 9" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-hairline border hairline">
+          <Stat label="SECTIONS" value="23" sub="all compilable" />
+          <Stat label="OUTPUT" value="TSX" sub="next.js + tailwind" />
+          <Stat label="EXPORT" value="1-CLICK" sub="github + vercel" />
+        </div>
 
         <div>
           <p className="label-mono text-ash mb-4">WHAT I BUILT</p>
@@ -65,17 +87,6 @@ export function AriseCode() {
         </div>
 
         <div className="flex flex-wrap gap-4 pt-2">
-          {p.liveUrl && (
-            <a
-              href={p.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="hover"
-              className="label-mono border border-bone px-5 py-3 text-bone hover:bg-bone hover:text-ink transition-colors"
-            >
-              LIVE SITE ↗
-            </a>
-          )}
           {p.githubUrl && (
             <a
               href={p.githubUrl}
@@ -90,5 +101,20 @@ export function AriseCode() {
         </div>
       </div>
     </article>
+  );
+}
+
+function Stat({ label, value, sub }: { label: string; value: string; sub: string }) {
+  return (
+    <div className="bg-ink p-5 flex flex-col gap-1">
+      <p className="label-mono text-hairline">{label}</p>
+      <p
+        className="font-sans font-bold text-bone tabular-nums"
+        style={{ fontSize: "2rem", letterSpacing: "-0.02em", lineHeight: 1 }}
+      >
+        {value}
+      </p>
+      <p className="label-mono text-ash">{sub}</p>
+    </div>
   );
 }
