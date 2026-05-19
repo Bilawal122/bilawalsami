@@ -59,30 +59,37 @@ export const CV_EXPERIENCE: CvEntry[] = [
 export const CV_PROJECTS: CvEntry[] = [
   {
     title: "Tally",
-    when: "2024 — present · solo build · App Store",
+    when: "2026 · solo build · App Store",
     bullets: [
-      "React Native + Expo + Supabase + RevenueCat. Onboarding quiz, free-text → macros parser, subscription paywall, analytics.",
+      "React Native, Expo, Supabase, RevenueCat. Onboarding quiz, the parser that turns free text into macros, subscription paywall, analytics screens.",
     ],
   },
   {
     title: "NoteSnap",
     when: "2024 — 2026 · dissertation",
     bullets: [
-      "Multi-source ingestion. Flashcards, quizzes, cheatsheets. SM-2 spaced repetition. Six-tool tutor. 108-page dissertation, predicted First.",
+      "Six ingestion paths into one Postgres schema with RLS. Flashcards, quizzes, cheatsheets. SM-2 spaced repetition. Six-tool tutor. 108-page dissertation, predicted First.",
     ],
   },
   {
     title: "AriseCode",
     when: "2023 — present · solo build",
     bullets: [
-      "Natural-language site builder. Prompt → spec → compilable React and Tailwind across 23 section types. Live preview, GitHub and Vercel export.",
+      "Natural-language site builder. Prompt becomes a spec, spec becomes JSX. 23 section types, all compile. Live preview, GitHub and Vercel export.",
     ],
   },
   {
     title: "Go Ride",
     when: "2026 · paid freelance",
     bullets: [
-      "Next.js + Tailwind. Fleet browser, pricing, WhatsApp lead capture. Shipped for a private-hire firm in Rochdale.",
+      "Next.js and Tailwind. Fleet browser, pricing, WhatsApp lead capture. Built for a private-hire firm in Rochdale.",
+    ],
+  },
+  {
+    title: "PromptForge",
+    when: "2023 — present · solo build",
+    bullets: [
+      "Takes a rough idea and turns it into a clean, reusable prompt. Saves me typing the same boilerplate every time.",
     ],
   },
 ];
@@ -92,7 +99,7 @@ export const CV_EDUCATION: CvEntry = {
   org: "Edge Hill University",
   when: "Sep 2023 — present · predicted First",
   bullets: [
-    "Full-stack development, software testing, cloud systems.",
+    "Focus on full-stack development, software testing, cloud systems.",
     "Coursework: data structures, agile project management, DevOps.",
   ],
 };
@@ -106,16 +113,18 @@ export const CV_SKILLS = [
   "Next.js",
   "Node.js",
   "Express",
+  "SQL",
   "Postgres",
   "Supabase",
   "Firebase",
   "AWS",
-  "GitHub",
-  "REST APIs",
   "Pandas",
   "NumPy",
-  "Amazon SP-API",
+  "REST APIs",
   "Tailwind",
+  "Amazon SP-API",
+  "Git",
+  "Agile",
 ];
 
 export const CV_HIGHLIGHTS = [

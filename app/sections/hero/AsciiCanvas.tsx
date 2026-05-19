@@ -12,18 +12,15 @@ const COLOR_MID = "rgba(242,239,232,0.30)";
 const COLOR_DIM = "rgba(107,107,107,0.40)";
 
 interface Props {
-  /** "watermark" runs at low fps and a capped resolution behind a mask */
+  /** "watermark" runs slightly slower than "feature" but the look is identical. */
   variant?: "watermark" | "feature";
 }
 
 /**
- * The watermark variant is the perf-critical one (it lives behind the hero).
- * Strategy:
- *   - Cap internal canvas resolution to a fixed grid (~80 cols × 30 rows) and
- *     CSS-scale up. The radial mask hides the scaling.
- *   - 3 fps. The look comes from the noise field, not motion smoothness.
- *   - Skip every other row (effectively half-density) so the inner loop is
- *     ~1200 cells per frame instead of ~13,000.
+ * Full-resolution ASCII grid, animated. Throttled by frame budget and paused
+ * when off-screen — that's the only perf concession. The look matches the
+ * original on purpose; the user prefers the heavier render over the cheaper
+ * pixelated downsample.
  */
 export function AsciiCanvas({ variant = "feature" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,14 +36,7 @@ export function AsciiCanvas({ variant = "feature" }: Props) {
     const FONT_SIZE = 14;
     const COL_W = 8;
     const ROW_H = 14;
-    const FRAME_MS = isWatermark ? 1000 / 5 : 1000 / 15;
-    const ROW_STEP = isWatermark ? 2 : 1;
-
-    // capped internal canvas size for the watermark variant — keeps the cost
-    // bounded on big screens but stays large enough that ASCII chars read as
-    // chars after the radial mask
-    const MAX_W = isWatermark ? 1280 : 1600;
-    const MAX_H = isWatermark ? 520 : 1600;
+    const FRAME_MS = isWatermark ? 1000 / 8 : 1000 / 15;
 
     let width = 0;
     let height = 0;
@@ -55,12 +45,10 @@ export function AsciiCanvas({ variant = "feature" }: Props) {
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const targetW = Math.min(MAX_W, Math.floor(rect.width));
-      const targetH = Math.min(MAX_H, Math.floor(rect.height));
-      width = targetW;
-      height = targetH;
-      canvas.width = targetW;
-      canvas.height = targetH;
+      width = Math.floor(rect.width);
+      height = Math.floor(rect.height);
+      canvas.width = width;
+      canvas.height = height;
       cols = Math.floor(width / COL_W);
       rows = Math.floor(height / ROW_H);
       ctx.font = `${FONT_SIZE}px var(--font-geist-mono), ui-monospace, monospace`;
@@ -73,7 +61,7 @@ export function AsciiCanvas({ variant = "feature" }: Props) {
     const dim: { x: number; y: number; c: string }[] = [];
 
     const draw = (time: number) => {
-      const t = time * 0.0003;
+      const t = time * 0.0005;
       ctx.fillStyle = "#0A0A0A";
       ctx.fillRect(0, 0, width, height);
 
@@ -84,15 +72,15 @@ export function AsciiCanvas({ variant = "feature" }: Props) {
 
       const cx = cols * 0.72;
       const cy = rows * 0.55;
-      const pulseR = 4 + (Math.sin(t * 1.5) * 0.5 + 0.5) * 4;
+      const pulseR = 5 + (Math.sin(t * 1.8) * 0.5 + 0.5) * 5;
       const pulseR2 = pulseR * pulseR;
 
-      for (let y = 0; y < rows; y += ROW_STEP) {
+      for (let y = 0; y < rows; y++) {
         const yT = y * 0.16 - t * 0.6;
-        const sinY = Math.cos(yT);
+        const cosY = Math.cos(yT);
         for (let x = 0; x < cols; x++) {
           const n =
-            Math.sin(x * 0.18 + t * 0.9) * sinY * 0.5 +
+            Math.sin(x * 0.18 + t * 0.9) * cosY * 0.5 +
             Math.sin((x + y) * 0.07 + t * 1.2) * 0.25 +
             0.5;
           const idx = (n * RAMP_LEN) | 0;

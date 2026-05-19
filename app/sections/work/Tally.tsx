@@ -45,7 +45,7 @@ export function Tally() {
           <Stat label="PARSE" value="<800ms" sub="median, no cold start" />
           <Stat label="LIMIT" value="5/MIN" sub="upstash sliding window" />
           <Stat label="PAYWALL" value="REVENUECAT" sub="onboarding + entitlements" />
-          <Stat label="LIVE ON" value="APP STORE" sub="released 2024" />
+          <Stat label="LIVE ON" value="APP STORE" sub="released 2026" />
         </div>
 
         <div>

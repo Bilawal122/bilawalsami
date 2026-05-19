@@ -22,7 +22,7 @@ export const CHANGELOG: ChangelogEntry[] = [
   {
     version: "v0.4.1",
     date: "MAR 2026",
-    body: "Tally crossed a thousand downloads on iOS, mostly through App Store search.",
+    body: "Tally released on the App Store. First downloads through App Store search.",
   },
   {
     version: "v0.3.0",

@@ -125,8 +125,15 @@ export function AriseCodeDemo() {
   const [status, setStatus] = useState<string>("IDLE");
   const [active, setActive] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // running is state so the disabled prop on GENERATE actually flips
+  const [running, setRunning] = useState<boolean>(false);
   const runningRef = useRef<boolean>(false);
   const abortRef = useRef<boolean>(false);
+
+  const setRun = useCallback((v: boolean) => {
+    runningRef.current = v;
+    setRunning(v);
+  }, []);
 
   const reset = useCallback(() => {
     if (!codeRef.current || !previewRef.current) return;
@@ -181,7 +188,7 @@ export function AriseCodeDemo() {
       if (runningRef.current) return;
       const tmpl = TEMPLATES[key];
       if (!tmpl || !codeRef.current || !previewRef.current) return;
-      runningRef.current = true;
+      setRun(true);
       abortRef.current = false;
       setError(null);
       setActive(key);
@@ -193,17 +200,17 @@ export function AriseCodeDemo() {
 
       await typeOutLines(tmpl.lines);
 
-      runningRef.current = false;
+      setRun(false);
       if (!abortRef.current) setStatus("COMPILED · 0 ERRORS");
     },
-    [typeOutLines],
+    [typeOutLines, setRun],
   );
 
   const runPrompt = useCallback(async () => {
     if (runningRef.current) return;
     const promptVal = promptText.trim();
     if (!promptVal || !codeRef.current || !previewRef.current) return;
-    runningRef.current = true;
+    setRun(true);
     abortRef.current = false;
     setError(null);
     setActive("freeform");
@@ -222,7 +229,7 @@ export function AriseCodeDemo() {
       if (!res.ok || !json.jsx) {
         setError(json.error ?? "Generator unavailable.");
         setStatus("ERROR");
-        runningRef.current = false;
+        setRun(false);
         return;
       }
 
@@ -240,14 +247,14 @@ export function AriseCodeDemo() {
       });
 
       await typeOutLines(lines);
-      runningRef.current = false;
+      setRun(false);
       if (!abortRef.current) setStatus("COMPILED · 0 ERRORS");
-    } catch (e) {
-      runningRef.current = false;
+    } catch {
+      setRun(false);
       setError("Network blip. Try again.");
       setStatus("ERROR");
     }
-  }, [promptText, typeOutLines]);
+  }, [promptText, typeOutLines, setRun]);
 
   useEffect(() => {
     reset();
@@ -290,10 +297,10 @@ export function AriseCodeDemo() {
         <button
           type="submit"
           data-cursor="hover"
-          disabled={runningRef.current}
-          className="label-mono bg-signal text-ink px-3 py-1.5 hover:bg-signal-dim transition-colors disabled:opacity-40"
+          disabled={running || !promptText.trim()}
+          className="label-mono bg-signal text-ink px-3 py-1.5 hover:bg-signal-dim transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          GENERATE ↵
+          {running ? "GENERATING…" : "GENERATE ↵"}
         </button>
       </form>
 
