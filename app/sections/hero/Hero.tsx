@@ -58,7 +58,7 @@ export function Hero() {
           >
             Final-year CS at Edge Hill (predicted First).
             <br />
-            Solo-shipped 3 AI products and run a profitable
+            Solo-shipped 3 production apps and run a profitable
             <br />
             e-commerce business on the side.
           </p>

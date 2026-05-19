@@ -44,7 +44,7 @@ export function NoteSnap() {
         <div className="grid grid-cols-3 gap-px bg-hairline border hairline">
           <Stat label="DISSERTATION" value="108pp" sub="predicted first" />
           <Stat label="SOURCES" value="6" sub="PDF · DOCX · YT · URL · camera · PPTX" />
-          <Stat label="AI TOOLS" value="6" sub="flashcards · quizzes · tutor · SM-2" />
+          <Stat label="TOOLS" value="6" sub="flashcards · quizzes · tutor · SM-2" />
         </div>
 
         <div>
@@ -61,41 +61,6 @@ export function NoteSnap() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="border-t hairline pt-6">
-          <p className="label-mono text-ash mb-3">RESEARCH ANGLE</p>
-          <p className="text-bone" style={{ fontSize: "1rem", lineHeight: 1.6 }}>
-            Users rated AI-generated study schedules as <em>more confident</em> than human-made ones — but
-            their actual recall didn't improve. That trust-calibration gap is what's pushing the next
-            year of work toward XAI: how do we make AI in education{" "}
-            <em>visibly</em> trustworthy, not just persuasive.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-4 pt-2">
-          {p.liveUrl && (
-            <a
-              href={p.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="hover"
-              className="label-mono border border-bone px-5 py-3 text-bone hover:bg-bone hover:text-ink transition-colors"
-            >
-              LIVE SITE ↗
-            </a>
-          )}
-          {p.githubUrl && (
-            <a
-              href={p.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="hover"
-              className="label-mono border hairline px-5 py-3 text-bone hover:border-signal hover:text-signal transition-colors"
-            >
-              GITHUB ↗
-            </a>
-          )}
         </div>
       </div>
     </article>

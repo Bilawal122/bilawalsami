@@ -41,15 +41,8 @@ export function AriseCode() {
       </header>
 
       <div className="flex flex-col gap-10">
-        {/* live-app CTA in lieu of the pending iframe / playback */}
-        <a
-          href={p.liveUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-cursor="hover"
-          className="group block border border-bone bg-signal text-ink p-8 hover:bg-signal-dim transition-colors"
-        >
-          <p className="label-mono text-ink/70 mb-3">TRY IT — IT&apos;S LIVE</p>
+        <div className="border border-bone bg-signal text-ink p-8">
+          <p className="label-mono text-ink/70 mb-3">THE PITCH</p>
           <p
             className="font-sans font-bold leading-tight"
             style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", letterSpacing: "-0.02em" }}
@@ -58,11 +51,7 @@ export function AriseCode() {
             <br />
             React + Tailwind preview in seconds.
           </p>
-          <p className="label-mono mt-6 inline-flex items-center gap-2">
-            OPEN ARISECODE-ZETA.VERCEL.APP
-            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
-          </p>
-        </a>
+        </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-hairline border hairline">
           <Stat label="SECTIONS" value="23" sub="all compilable" />
@@ -84,20 +73,6 @@ export function AriseCode() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="flex flex-wrap gap-4 pt-2">
-          {p.githubUrl && (
-            <a
-              href={p.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="hover"
-              className="label-mono border hairline px-5 py-3 text-bone hover:border-signal hover:text-signal transition-colors"
-            >
-              GITHUB ↗
-            </a>
-          )}
         </div>
       </div>
     </article>

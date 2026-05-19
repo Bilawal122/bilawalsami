@@ -23,7 +23,7 @@ export function More() {
         >
           {MORE.map((card) => (
             <li key={card.id} className="bg-ink">
-              <article className="group relative h-full p-6 flex flex-col gap-4 transition-colors hover:bg-steel">
+              <article className="group relative h-full p-6 flex flex-col gap-4">
                 <header className="flex items-start justify-between gap-4">
                   <span className="label-mono text-ash">{card.id}</span>
                   <StatusBadge statuses={card.statuses} />
@@ -38,26 +38,9 @@ export function More() {
                   {card.oneLiner}
                 </p>
                 <p className="mono-sm text-ash mt-auto">{card.stack}</p>
-                <div className="flex items-center justify-between gap-4">
-                  {card.href ? (
-                    <a
-                      href={card.href}
-                      target={card.href.startsWith("http") ? "_blank" : undefined}
-                      rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      data-cursor="hover"
-                      className="label-mono text-bone hover:text-signal transition-colors underline-offset-4 hover:underline"
-                    >
-                      {card.hrefLabel ?? card.href} ↗
-                    </a>
-                  ) : (
-                    <span className="label-mono text-hairline">{card.note ?? ""}</span>
-                  )}
-                </div>
-                {/* edge highlight — border shifts to signal on hover */}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 border border-transparent transition-colors duration-200 group-hover:border-signal"
-                />
+                {card.note && (
+                  <p className="label-mono text-hairline">{card.note}</p>
+                )}
               </article>
             </li>
           ))}

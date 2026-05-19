@@ -9,8 +9,6 @@ export interface FeaturedProject {
   stack: string[];
   role: string;
   statuses: Status[];
-  liveUrl?: string;
-  githubUrl?: string;
   what: string[];
 }
 
@@ -20,12 +18,10 @@ export interface MoreProject {
   oneLiner: string;
   stack: string;
   statuses: Status[];
-  href?: string;
-  hrefLabel?: string;
   note?: string;
 }
 
-/** PRD §4.3 — Featured Work chapter content */
+/** Featured Work chapter content */
 export const FEATURED: FeaturedProject[] = [
   {
     id: "notesnap",
@@ -35,15 +31,13 @@ export const FEATURED: FeaturedProject[] = [
     statuses: ["ACADEMIC", "IN DEV"],
     role: "Solo build",
     oneLiner:
-      "An AI study companion that turns lecture slides, PDFs, and YouTube videos into flashcards, quizzes, and a personal tutor.",
-    stack: ["React Native", "Expo", "Supabase", "Gemini Flash", "TypeScript"],
+      "A study companion that turns lecture slides, PDFs, and YouTube videos into flashcards, quizzes, and a personal tutor.",
+    stack: ["React Native", "Expo", "Supabase", "TypeScript"],
     what: [
-      "Full stack solo: auth + RLS Postgres schema, multi-source ingestion (camera / PDF / PPTX / DOCX / URL / YouTube), AI pipelines for flashcards / quizzes / cheatsheets.",
-      "SM-2 spaced repetition, an AI tutor with 6 tools, streaks / XP / mastery analytics.",
-      "108-page dissertation, predicted First. The trust-calibration finding is what's pushing me toward XAI research.",
+      "Full stack solo: auth + RLS Postgres schema, multi-source ingestion (camera / PDF / PPTX / DOCX / URL / YouTube), pipelines for flashcards / quizzes / cheatsheets.",
+      "SM-2 spaced repetition, a tutor with 6 tools, streaks / XP / mastery analytics.",
+      "108-page dissertation, predicted First.",
     ],
-    liveUrl: "https://notesnap.dev",
-    githubUrl: "https://github.com/Bilawal122/notesnap",
   },
   {
     id: "tally",
@@ -52,14 +46,13 @@ export const FEATURED: FeaturedProject[] = [
     name: "Tally",
     statuses: ["LIVE"],
     role: "Solo build",
-    oneLiner: "Calorie tracking without the database scroll — type or say what you ate, AI does the rest.",
-    stack: ["React Native", "Expo", "Supabase", "Gemini", "RevenueCat"],
+    oneLiner: "Calorie tracking without the database scroll — type or say what you ate, get macros back.",
+    stack: ["React Native", "Expo", "Supabase", "RevenueCat"],
     what: [
-      "Onboarding quiz, free-text → macros AI parsing pipeline, daily tracking + analytics screens.",
+      "Onboarding quiz, free-text → macros parsing pipeline, daily tracking + analytics screens.",
       "RevenueCat-powered subscription paywall, App-Store-grade onboarding, Supabase auth.",
-      "Live on the App Store. Try the demo below — it's the same Gemini parser, rate-limited.",
+      "Live on the App Store. Try the demo below — same parser as the app, rate-limited.",
     ],
-    liveUrl: "https://apps.apple.com/app/id/tally",
   },
   {
     id: "arisecode",
@@ -69,18 +62,16 @@ export const FEATURED: FeaturedProject[] = [
     statuses: ["LIVE"],
     role: "Solo build",
     oneLiner: "A natural-language website builder — describe a site, get a working React + Tailwind preview in seconds.",
-    stack: ["Next.js", "TypeScript", "Gemini", "Tailwind", "Vercel"],
+    stack: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
     what: [
       "Prompt → spec pipeline with a template engine that guarantees compilable output across 23 section types.",
       "Live preview rendered in-browser, one-click export to GitHub + Vercel.",
-      "Try the embedded demo — full live app, no signup required.",
+      "23 section types, compilable TSX output, one-click export.",
     ],
-    liveUrl: "https://arisecode-zeta.vercel.app",
-    githubUrl: "https://github.com/Bilawal122/arisecode",
   },
 ];
 
-/** PRD §4.4 — More section, 8 cards in order of recruiter relevance */
+/** More section, 8 cards in order of recruiter relevance */
 export const MORE: MoreProject[] = [
   {
     id: "SIDE-01",
@@ -89,8 +80,6 @@ export const MORE: MoreProject[] = [
     oneLiner:
       "Private-hire car rental site for taxi drivers across the UK — fleet browser, pricing, multi-page flow, WhatsApp lead capture.",
     stack: "Next.js · Tailwind · Vercel",
-    href: "https://go-ridenw.vercel.app",
-    hrefLabel: "go-ridenw.vercel.app",
     note: "Paid freelance build for a Rochdale-based client.",
   },
   {
@@ -98,19 +87,15 @@ export const MORE: MoreProject[] = [
     name: "JetLagPro",
     statuses: ["BETA"],
     oneLiner:
-      "AI-driven jet-lag protocol generator — pre-flight schedule, light-exposure timing, route-specific recovery plans.",
+      "Jet-lag protocol generator — pre-flight schedule, light-exposure timing, route-specific recovery plans.",
     stack: "React Native · Expo · RevenueCat",
-    href: "#testflight-pending",
-    hrefLabel: "TESTFLIGHT INVITE ↗",
   },
   {
     id: "SIDE-03",
     name: "ResumeHax",
     statuses: ["LIVE"],
-    oneLiner: "AI CV and cover-letter builder with job-description tailoring.",
-    stack: "Next.js · Node · Postgres · OpenAI",
-    href: "https://resumehax.vercel.app",
-    hrefLabel: "resumehax.vercel.app",
+    oneLiner: "CV and cover-letter builder with job-description tailoring.",
+    stack: "Next.js · Node · Postgres",
   },
   {
     id: "SIDE-04",
@@ -119,8 +104,6 @@ export const MORE: MoreProject[] = [
     oneLiner:
       "Webcam-driven hand-gesture recognition — perform actions on the computer with gestures alone. Real-time CV pipeline running fully offline.",
     stack: "Python · OpenCV · MediaPipe",
-    href: "https://github.com/Bilawal122",
-    hrefLabel: "GITHUB ↗",
   },
   {
     id: "SIDE-05",
@@ -128,27 +111,21 @@ export const MORE: MoreProject[] = [
     statuses: ["IN DEV"],
     oneLiner: "Personal study tool — quiz and flashcard generator for exam prep, built during finals.",
     stack: "Next.js",
-    href: "https://exam-guide-seven.vercel.app",
-    hrefLabel: "exam-guide-seven.vercel.app",
   },
   {
     id: "SIDE-06",
     name: "PromptForge",
     statuses: ["LIVE"],
-    oneLiner: "Turns rough ideas into structured prompts for creative and coding tasks.",
-    stack: "Next.js · OpenAI · Tailwind",
-    href: "https://github.com/Bilawal122",
-    hrefLabel: "GITHUB ↗",
+    oneLiner: "Structures rough ideas into clean, reusable prompts for creative and coding tasks.",
+    stack: "Next.js · Tailwind",
   },
   {
     id: "SIDE-07",
-    name: "NLP-XAI",
+    name: "HPC Classifier",
     statuses: ["ACADEMIC"],
     oneLiner:
-      "Transformer text classifier trained from scratch on Edge Hill's HPC. Interpreted with SHAP, LIME, and attention.",
+      "Transformer text classifier trained from scratch on Edge Hill's HPC. Interpreted with SHAP, LIME, and attention probing.",
     stack: "PyTorch · BERT · Slurm",
-    href: "https://github.com/Bilawal122",
-    hrefLabel: "GITHUB ↗",
   },
   {
     id: "SIDE-08",

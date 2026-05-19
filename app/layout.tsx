@@ -26,12 +26,12 @@ const geistMono = Geist_Mono({
 const SITE_URL = "https://bilawalsami.vercel.app";
 const SITE_NAME = "Bilawal Ullah Sami";
 const SITE_DESCRIPTION =
-  "Software engineer in Manchester. Building AI tools that ship, not slideware. Final-year CS at Edge Hill, three live AI products, profitable e-commerce on the side.";
+  "Software engineer in Manchester. Building tools that ship, not slideware. Final-year CS at Edge Hill, three live products, profitable e-commerce on the side.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: `${SITE_NAME} — Software engineer building AI tools that ship`,
+    default: `${SITE_NAME} — Software engineer building tools that ship`,
     template: `%s — ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
@@ -41,28 +41,24 @@ export const metadata: Metadata = {
   keywords: [
     "Bilawal Ullah Sami",
     "software engineer",
-    "AI",
-    "XAI",
     "Manchester",
     "Edge Hill",
     "Next.js",
     "React Native",
-    "Gemini",
-    "NoteSnap",
-    "Tally",
-    "AriseCode",
+    "TypeScript",
+    "Seraphize",
   ],
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: `${SITE_NAME} — Software engineer building AI tools that ship`,
+    title: `${SITE_NAME} — Software engineer building tools that ship`,
     description: SITE_DESCRIPTION,
     locale: "en_GB",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Software engineer building AI tools that ship`,
+    title: `${SITE_NAME} — Software engineer building tools that ship`,
     description: SITE_DESCRIPTION,
   },
   robots: {
@@ -89,7 +85,7 @@ const personJsonLd = {
   familyName: "Ullah Sami",
   jobTitle: "Software engineer",
   url: SITE_URL,
-  email: "mailto:b.ullahsami@gmail.com",
+  email: "mailto:bilawal.sami.2@gmail.com",
   address: {
     "@type": "PostalAddress",
     addressLocality: "Manchester",
@@ -100,18 +96,15 @@ const personJsonLd = {
     name: "Edge Hill University",
     sameAs: "https://www.edgehill.ac.uk/",
   },
-  sameAs: ["https://github.com/Bilawal122"],
+  sameAs: ["https://linkedin.com/in/bilawal-sami-1ba691322"],
   knowsAbout: [
     "Software engineering",
-    "Artificial intelligence",
-    "Explainable AI",
     "TypeScript",
     "React Native",
     "Next.js",
     "Python",
-    "PyTorch",
-    "Gemini",
     "Postgres",
+    "E-commerce",
   ],
 };
 

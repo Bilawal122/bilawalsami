@@ -48,9 +48,9 @@ export function CommandPalette() {
       {
         id: "copy-email",
         label: "Copy email address",
-        hint: "b.ullahsami@gmail.com",
+        hint: "bilawal.sami.2@gmail.com",
         run: () => {
-          navigator.clipboard?.writeText("b.ullahsami@gmail.com").catch(() => {});
+          navigator.clipboard?.writeText("bilawal.sami.2@gmail.com").catch(() => {});
         },
       },
       {
@@ -59,7 +59,7 @@ export function CommandPalette() {
         hint: "mailto: with subject pre-filled",
         run: () => {
           window.location.href =
-            "mailto:b.ullahsami@gmail.com?subject=" +
+            "mailto:bilawal.sami.2@gmail.com?subject=" +
             encodeURIComponent("From bilawalsami.vercel.app — [your role here]");
         },
       },

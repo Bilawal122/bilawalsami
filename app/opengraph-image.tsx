@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 export const alt =
-  "Bilawal Ullah Sami — Software engineer building AI tools that ship, not slideware.";
+  "Bilawal Ullah Sami — Software engineer building tools that ship, not slideware.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -105,7 +105,7 @@ export default async function OG() {
             color: "#F2EFE8",
           }}
         >
-          Building AI tools that
+          Building tools that
         </span>
         <span
           style={{

@@ -67,10 +67,8 @@ export function TallyDemo() {
       <div className="border hairline bg-steel">
         <div className="px-4 py-3 border-b hairline flex items-center justify-between">
           <p className="label-mono text-signal">LIVE DEMO · TALLY MACRO ESTIMATOR</p>
-          {state.status === "done" && state.data?.stub ? (
-            <span className="label-mono text-blood">STUB · GEMINI_API_KEY NOT SET</span>
-          ) : (
-            <span className="label-mono text-hairline">POWERED BY GEMINI FLASH</span>
+          {state.status === "done" && state.data?.stub && (
+            <span className="label-mono text-blood">STUB · NO API KEY</span>
           )}
         </div>
 

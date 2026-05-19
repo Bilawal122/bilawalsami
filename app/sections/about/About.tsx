@@ -14,13 +14,9 @@ const ROWS: Row[] = [
     label: "EDUCATION",
     body: (
       <>
-        Edge Hill University, BSc Computing (Software Engineering)
+        Edge Hill University, BSc Software Engineering
         <br />
         Predicted First Class Honours, graduating 2026
-        <br />
-        <span className="text-ash">
-          Selected coursework: ZeroMQ WSN simulation, Arduino pelican-crossing FSM with C + x86 NASM, CAP-theorem DBMS feasibility study
-        </span>
       </>
     ),
   },
@@ -28,14 +24,9 @@ const ROWS: Row[] = [
     label: "STACK",
     body: <>TypeScript · React · React Native · Next.js · Python · Postgres</>,
   },
-  { label: "AI", body: <>Gemini · GPT · Claude · PyTorch · SHAP / LIME for XAI</> },
   {
     label: "RUNNING",
     body: <>Seraphize Ltd — profitable Amazon FBA, UK + EU markets</>,
-  },
-  {
-    label: "APPLYING TO",
-    body: <>UKRI AI CDT (Cambridge / Manchester) PhD, XAI track</>,
   },
 ];
 
@@ -51,7 +42,6 @@ export function About() {
       </div>
 
       <div className="mx-auto max-w-[1400px] mt-20 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-20">
-        {/* left column — mono key/value list */}
         <dl className="space-y-7">
           {ROWS.map((row) => (
             <div key={row.label} className="grid grid-cols-1 gap-2">
@@ -61,19 +51,12 @@ export function About() {
           ))}
         </dl>
 
-        {/* right column — body paragraphs */}
         <div className="lg:col-span-2 space-y-7 max-w-[58ch]">
           <p
             className="text-bone"
             style={{ fontSize: "1.125rem", lineHeight: 1.55 }}
           >
-            I build full products solo, end to end. Auth, schema, AI pipelines, payments, the UI — all of it. Three of those products are live and used by real people. One is my dissertation, the other two are side projects that grew into apps with paying users.
-          </p>
-          <p
-            className="text-bone"
-            style={{ fontSize: "1.125rem", lineHeight: 1.55 }}
-          >
-            My dissertation surfaced a trust-calibration gap in how people use AI study tools: users felt more confident with AI-generated schedules but didn't actually retain more. That finding is what's pushing me toward XAI research in 2026.
+            I build full products solo, end to end. Auth, schema, pipelines, payments, the UI — all of it. Three of those products are live and used by real people. One is my dissertation, the other two are side projects that grew into apps with paying users.
           </p>
           <p
             className="text-bone"

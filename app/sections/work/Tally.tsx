@@ -59,23 +59,6 @@ export function Tally() {
             ))}
           </ul>
         </div>
-
-        <div className="flex flex-wrap gap-4 pt-2">
-          {p.liveUrl && (
-            <a
-              href={p.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-cursor="hover"
-              className="label-mono border border-bone px-5 py-3 text-bone hover:bg-bone hover:text-ink transition-colors"
-            >
-              APP STORE ↗
-            </a>
-          )}
-          <span className="label-mono border hairline px-5 py-3 text-ash">
-            GITHUB · PRIVATE
-          </span>
-        </div>
       </div>
     </article>
   );

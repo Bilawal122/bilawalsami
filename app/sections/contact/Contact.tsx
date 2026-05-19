@@ -3,12 +3,11 @@ import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
 
 const meta = SECTIONS.find((s) => s.id === "contact")!;
 
-const EMAIL = "b.ullahsami@gmail.com";
+const EMAIL = "bilawal.sami.2@gmail.com";
 const MAILTO = `mailto:${EMAIL}?subject=${encodeURIComponent("From bilawalsami.vercel.app — [your role here]")}`;
 
 const SECONDARY = [
-  { label: "GITHUB", url: "https://github.com/Bilawal122", value: "github.com/Bilawal122" },
-  { label: "LINKEDIN", url: "https://linkedin.com/in/bilawal-ullah-sami", value: "linkedin.com/in/bilawal-ullah-sami" },
+  { label: "LINKEDIN", url: "https://linkedin.com/in/bilawal-sami-1ba691322", value: "linkedin.com/in/bilawal-sami-1ba691322" },
   { label: "CV.PDF", url: "/cv/Bilawal-Ullah-Sami-CV.pdf", value: "DOWNLOAD ↓", download: true as const },
 ];
 
@@ -26,17 +25,17 @@ export function Contact() {
       <div className="mx-auto max-w-[1200px] mt-20 flex flex-col items-center gap-12 text-center">
         <p className="label-mono text-ash">
           <span className="text-bone">CONTACT</span>
-          <span className="mx-2">005</span>
+          <span className="mx-2">004</span>
           <span className="text-hairline">/</span>
-          <span className="ml-2">005</span>
+          <span className="ml-2">004</span>
         </p>
 
         <a
           href={MAILTO}
           data-cursor="hover"
-          className="group relative inline-block font-sans font-bold text-bone hover:text-signal transition-colors"
+          className="group relative inline-block font-sans font-bold text-bone hover:text-signal transition-colors break-all"
           style={{
-            fontSize: "clamp(2rem, 6vw, 4.5rem)",
+            fontSize: "clamp(1.5rem, 5vw, 4rem)",
             letterSpacing: "-0.03em",
             lineHeight: 1.05,
           }}
@@ -50,10 +49,10 @@ export function Contact() {
         </a>
 
         <p className="mono-sm text-ash max-w-[55ch]">
-          Best for: grad-role intros, PhD supervisor chats, paid freelance leads. Replies within a day, usually faster.
+          Best for: grad-role intros, paid freelance leads. Replies within a day, usually faster.
         </p>
 
-        <ul className="mt-6 grid gap-6 sm:grid-cols-3 w-full max-w-[700px]">
+        <ul className="mt-6 grid gap-6 sm:grid-cols-2 w-full max-w-[700px]">
           {SECONDARY.map((item) => (
             <li key={item.label} className="flex flex-col items-center gap-2">
               <span className="label-mono text-hairline">{item.label}</span>

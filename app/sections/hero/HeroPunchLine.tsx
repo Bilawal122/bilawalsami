@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-const BASE_LINES = ["Software engineer.", "Building AI tools that", "ship, not slideware."];
+const BASE_LINES = ["Software engineer.", "Building tools that", "ship, not slideware."];
 
 const container = {
   hidden: { opacity: 1 },
@@ -27,13 +27,8 @@ const NAME_DEBOUNCE_MS = 400;
 const NAME_MIN_LEN = 2;
 const NAME_MAX_LEN = 24;
 
-/**
- * Easter egg (PRD §4.1): when the user types letters on the keyboard while the
- * hero is in view, the third line briefly becomes "for [Their Name]." then
- * reverts after 4s. Capitalises gracefully.
- */
 function useTypedName(): string | null {
-  const [typed, setTyped] = useState("");
+  const [, setTyped] = useState("");
   const [override, setOverride] = useState<string | null>(null);
   const debounceRef = useRef<number | null>(null);
   const holdRef = useRef<number | null>(null);
@@ -42,13 +37,11 @@ function useTypedName(): string | null {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (stop.current) return;
-      // ignore when user is in an input/textarea/contenteditable
       const target = e.target as HTMLElement | null;
       if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) {
         return;
       }
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      // accept single printable letters only
       if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
         setTyped((prev) => (prev + e.key).slice(-NAME_MAX_LEN));
       } else if (e.key === "Backspace") {
@@ -87,7 +80,7 @@ export function HeroPunchLine() {
   const reduced = useReducedMotion();
   const override = useTypedName();
 
-  const lines = override ? [BASE_LINES[0], "Building AI tools", `for ${override}.`] : BASE_LINES;
+  const lines = override ? [BASE_LINES[0], "Building tools", `for ${override}.`] : BASE_LINES;
 
   return (
     <motion.h2
