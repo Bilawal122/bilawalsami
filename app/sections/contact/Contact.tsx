@@ -1,17 +1,28 @@
+"use client";
+
+import { useState } from "react";
 import { SectionLabel } from "@/components/SectionLabel";
 import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
 
 const meta = SECTIONS.find((s) => s.id === "contact")!;
 
 const EMAIL = "bilawal.sami.2@gmail.com";
-const MAILTO = `mailto:${EMAIL}?subject=${encodeURIComponent("From bilawalsami.vercel.app — [your role here]")}`;
 
-const SECONDARY = [
-  { label: "LINKEDIN", url: "https://linkedin.com/in/bilawal-sami-1ba691322", value: "linkedin.com/in/bilawal-sami-1ba691322" },
-  { label: "CV.PDF", url: "/cv/Bilawal-Ullah-Sami-CV.pdf", value: "DOWNLOAD ↓", download: true as const },
-];
+const ROLE_CHIPS = [
+  { id: "grad", label: "GRAD ROLE", subject: "Grad SWE role" },
+  { id: "intern", label: "INTERNSHIP", subject: "Internship" },
+  { id: "freelance", label: "FREELANCE", subject: "Freelance lead" },
+  { id: "other", label: "OTHER", subject: "Quick chat" },
+] as const;
 
+/**
+ * Site Review note E — role chip selector above the email link. Click sets
+ * the mailto subject prefix. Removes typing, increases conversion.
+ */
 export function Contact() {
+  const [chip, setChip] = useState<(typeof ROLE_CHIPS)[number]>(ROLE_CHIPS[0]);
+  const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(`From bilawalsami.vercel.app — ${chip.subject}`)}`;
+
   return (
     <section
       id={meta.anchor}
@@ -22,16 +33,38 @@ export function Contact() {
         <SectionLabel section={meta} total={SECTION_TOTAL} />
       </div>
 
-      <div className="mx-auto max-w-[1200px] mt-20 flex flex-col items-center gap-12 text-center">
+      <div className="mx-auto max-w-[1200px] mt-20 flex flex-col items-center gap-10 text-center">
         <p className="label-mono text-ash">
           <span className="text-bone">CONTACT</span>
-          <span className="mx-2">004</span>
+          <span className="mx-2">{meta.number}</span>
           <span className="text-hairline">/</span>
-          <span className="ml-2">004</span>
+          <span className="ml-2">{String(SECTION_TOTAL - 1).padStart(3, "0")}</span>
         </p>
 
+        <div className="flex flex-wrap justify-center gap-2">
+          <span className="label-mono text-hairline self-center mr-2">WHEN YOU EMAIL ME:</span>
+          {ROLE_CHIPS.map((c) => {
+            const on = c.id === chip.id;
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setChip(c)}
+                data-cursor="hover"
+                className={`label-mono border px-3 py-1.5 transition-colors ${
+                  on
+                    ? "border-signal text-signal bg-signal/5"
+                    : "hairline text-ash hover:text-bone hover:border-bone"
+                }`}
+              >
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+
         <a
-          href={MAILTO}
+          href={mailto}
           data-cursor="hover"
           className="group relative inline-block font-sans font-bold text-bone hover:text-signal transition-colors break-all"
           style={{
@@ -49,25 +82,34 @@ export function Contact() {
         </a>
 
         <p className="mono-sm text-ash max-w-[55ch]">
-          Best for: grad-role intros, paid freelance leads. Replies within a day, usually faster.
+          Subject pre-fills with{" "}
+          <span className="text-bone">{`"From bilawalsami.vercel.app — ${chip.subject}"`}</span>. Replies within a day, usually faster.
         </p>
 
         <ul className="mt-6 grid gap-6 sm:grid-cols-2 w-full max-w-[700px]">
-          {SECONDARY.map((item) => (
-            <li key={item.label} className="flex flex-col items-center gap-2">
-              <span className="label-mono text-hairline">{item.label}</span>
-              <a
-                href={item.url}
-                target={item.url.startsWith("http") ? "_blank" : undefined}
-                rel={item.url.startsWith("http") ? "noopener noreferrer" : undefined}
-                download={"download" in item ? item.download : undefined}
-                data-cursor="hover"
-                className="label-mono text-bone hover:text-signal transition-colors"
-              >
-                {item.value}
-              </a>
-            </li>
-          ))}
+          <li className="flex flex-col items-center gap-2">
+            <span className="label-mono text-hairline">LINKEDIN</span>
+            <a
+              href="https://linkedin.com/in/bilawal-sami-1ba691322"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor="hover"
+              className="label-mono text-bone hover:text-signal transition-colors"
+            >
+              linkedin.com/in/bilawal-sami-1ba691322
+            </a>
+          </li>
+          <li className="flex flex-col items-center gap-2">
+            <span className="label-mono text-hairline">CV.PDF</span>
+            <a
+              href="/cv/Bilawal-Ullah-Sami-CV.pdf"
+              download
+              data-cursor="hover"
+              className="label-mono text-bone hover:text-signal transition-colors"
+            >
+              DOWNLOAD ↓
+            </a>
+          </li>
         </ul>
       </div>
     </section>

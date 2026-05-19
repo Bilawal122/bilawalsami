@@ -1,5 +1,6 @@
 import { StatusBadge } from "@/components/StatusBadge";
 import { FEATURED } from "@/lib/projects";
+import { AriseCodeDemo } from "./AriseCodeDemo";
 
 const p = FEATURED.find((x) => x.id === "arisecode")!;
 
@@ -41,17 +42,7 @@ export function AriseCode() {
       </header>
 
       <div className="flex flex-col gap-10">
-        <div className="border border-bone bg-signal text-ink p-8">
-          <p className="label-mono text-ink/70 mb-3">THE PITCH</p>
-          <p
-            className="font-sans font-bold leading-tight"
-            style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", letterSpacing: "-0.02em" }}
-          >
-            Describe a site → get a working
-            <br />
-            React + Tailwind preview in seconds.
-          </p>
-        </div>
+        <AriseCodeDemo />
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-hairline border hairline">
           <Stat label="SECTIONS" value="23" sub="all compilable" />

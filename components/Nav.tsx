@@ -5,12 +5,8 @@ import { useLenis } from "@/components/LenisProvider";
 import { SECTIONS } from "@/lib/sections";
 
 /**
- * Fixed top nav (PRD §3.1).
- *  - Monogram "BUS" left
- *  - Anchor links centred (jumps via Lenis when present)
- *  - "Available for grad roles" pulsing pill right
- *  - CV download (user pick: "PRD defaults + CV in nav too")
- *  - Background fades from transparent → ink/85 + blur once user scrolls past hero
+ * Fixed top nav. Note B from the Site Review: availability pill now
+ * carries the concrete answer — role / start / location.
  */
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -49,11 +45,11 @@ export function Nav() {
           : "border-transparent bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-6">
+      <div className="mx-auto flex h-full max-w-[1600px] items-center justify-between px-6 gap-4">
         <a
           href="#section-000"
           onClick={handleAnchor("section-000")}
-          className="label-mono text-bone tracking-[0.2em] hover:text-signal transition-colors"
+          className="label-mono text-bone tracking-[0.2em] hover:text-signal transition-colors shrink-0"
           data-cursor="hover"
           aria-label="Bilawal Ullah Sami — home"
         >
@@ -61,8 +57,8 @@ export function Nav() {
         </a>
 
         <nav className="hidden md:block">
-          <ul className="flex items-center gap-8">
-            {SECTIONS.filter((s) => s.id !== "hero").map((s) => (
+          <ul className="flex items-center gap-6">
+            {SECTIONS.filter((s) => !s.navHidden).map((s) => (
               <li key={s.id}>
                 <a
                   href={`#${s.anchor}`}
@@ -77,7 +73,7 @@ export function Nav() {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 shrink-0">
           <a
             href="/cv/Bilawal-Ullah-Sami-CV.pdf"
             download
@@ -87,18 +83,19 @@ export function Nav() {
             CV.PDF ↓
           </a>
           <a
-            href="#section-005"
-            onClick={handleAnchor("section-005")}
-            className="group flex items-center gap-2 label-mono text-bone hover:text-signal transition-colors"
+            href="#section-007"
+            onClick={handleAnchor("section-007")}
+            className="group flex items-center gap-2 label-mono text-signal hover:text-bone transition-colors"
             data-cursor="hover"
-            aria-label="Available for grad roles — contact"
+            aria-label="Available for grad SWE roles starting Sept 2026, UK or remote"
           >
             <span
               className="inline-block h-2 w-2 bg-signal"
               style={{ animation: "pulseDot 1.5s ease-in-out infinite" }}
             />
-            <span className="hidden sm:inline">AVAILABLE FOR GRAD ROLES</span>
-            <span className="sm:hidden">AVAILABLE</span>
+            <span className="hidden lg:inline">AVAILABLE · GRAD SWE · SEPT 2026 · UK / REMOTE</span>
+            <span className="hidden md:inline lg:hidden">AVAILABLE · SEPT 2026</span>
+            <span className="md:hidden">AVAILABLE</span>
           </a>
         </div>
       </div>

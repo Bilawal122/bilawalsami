@@ -6,23 +6,17 @@ import { useReducedMotion } from "@/lib/useReducedMotion";
 const RAMP = " .:-=+*?#%@";
 const RAMP_LEN = RAMP.length;
 
-// per-intensity-bucket colour, looked up by ramp index range
-const COLOR_PULSE = "rgba(230,255,0,0.9)"; // signal centre pulse
-const COLOR_BRIGHT = "rgba(242,239,232,0.85)";
-const COLOR_MID = "rgba(242,239,232,0.45)";
-const COLOR_DIM = "rgba(107,107,107,0.5)";
+const COLOR_PULSE = "rgba(230,255,0,0.65)";
+const COLOR_BRIGHT = "rgba(242,239,232,0.55)";
+const COLOR_MID = "rgba(242,239,232,0.30)";
+const COLOR_DIM = "rgba(107,107,107,0.40)";
 
-/**
- * Hacker-terminal ASCII grid (PRD §4.1 hero canvas, default mode).
- *
- * Perf notes:
- *  - 15fps (drops to ~half of the original 24fps; still feels alive)
- *  - dpr capped at 1 (no scaling) — full-res text doesn't need 2× pixels
- *  - paints batched per colour bucket to minimise fillStyle assignments
- *  - paused via IntersectionObserver when off-screen
- *  - rAF stops entirely under prefers-reduced-motion after a single static frame
- */
-export function AsciiCanvas() {
+interface Props {
+  /** "watermark" runs at 6fps with lower intensity per Site Review note D */
+  variant?: "watermark" | "feature";
+}
+
+export function AsciiCanvas({ variant = "feature" }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reduced = useReducedMotion();
 
@@ -36,7 +30,7 @@ export function AsciiCanvas() {
     const FONT_SIZE = 14;
     const COL_W = 8;
     const ROW_H = 14;
-    const FRAME_MS = 1000 / 15;
+    const FRAME_MS = variant === "watermark" ? 1000 / 6 : 1000 / 15;
 
     let width = 0;
     let height = 0;
@@ -55,14 +49,13 @@ export function AsciiCanvas() {
       ctx.textBaseline = "top";
     };
 
-    // pre-allocated buckets so we don't rebuild arrays each frame
     const pulse: { x: number; y: number; c: string }[] = [];
     const bright: { x: number; y: number; c: string }[] = [];
     const mid: { x: number; y: number; c: string }[] = [];
     const dim: { x: number; y: number; c: string }[] = [];
 
     const draw = (time: number) => {
-      const t = time * 0.0005;
+      const t = time * 0.0004;
       ctx.fillStyle = "#0A0A0A";
       ctx.fillRect(0, 0, width, height);
 
@@ -71,9 +64,9 @@ export function AsciiCanvas() {
       mid.length = 0;
       dim.length = 0;
 
-      const cx = cols / 2;
-      const cy = rows / 2;
-      const pulseR = 4 + (Math.sin(t * 2) * 0.5 + 0.5) * 4;
+      const cx = cols * 0.7;
+      const cy = rows * 0.55;
+      const pulseR = 5 + (Math.sin(t * 1.8) * 0.5 + 0.5) * 5;
       const pulseR2 = pulseR * pulseR;
 
       for (let y = 0; y < rows; y++) {
@@ -102,7 +95,6 @@ export function AsciiCanvas() {
         }
       }
 
-      // single fillStyle assignment per bucket
       ctx.fillStyle = COLOR_DIM;
       for (let i = 0; i < dim.length; i++) ctx.fillText(dim[i].c, dim[i].x, dim[i].y);
       ctx.fillStyle = COLOR_MID;
@@ -128,7 +120,6 @@ export function AsciiCanvas() {
 
     const tick = (time: number) => {
       if (!visible) {
-        // sleep one rAF then re-check; cheaper than running draw
         raf = requestAnimationFrame(tick);
         return;
       }
@@ -154,18 +145,7 @@ export function AsciiCanvas() {
       ro.disconnect();
       io.disconnect();
     };
-  }, [reduced]);
+  }, [reduced, variant]);
 
-  return (
-    <div
-      className="relative h-48 sm:h-64 border hairline overflow-hidden bg-ink"
-      aria-hidden="true"
-      data-print-hide="true"
-    >
-      <canvas ref={canvasRef} className="block h-full w-full" />
-      <p className="absolute bottom-2 right-2 label-mono text-hairline pointer-events-none">
-        ASCII · 15FPS · PERLIN
-      </p>
-    </div>
-  );
+  return <canvas ref={canvasRef} className="block h-full w-full" />;
 }

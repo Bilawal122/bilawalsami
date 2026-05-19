@@ -1,27 +1,37 @@
 /**
- * Canonical section metadata. Section numbers are 000-padded.
- * Nav, section labels, command palette, and sitemap all read from here.
+ * Canonical section metadata for the redesign branch.
+ * Order driven by Site Review (Obs 02 hoists Tally to a TRY IT, Obs 05 inlines
+ * the CV, Obs 07 reinstates Now as a status board).
  */
-export type SectionId = "hero" | "about" | "work" | "more" | "contact";
+export type SectionId =
+  | "hero"
+  | "about"
+  | "tryit"
+  | "work"
+  | "more"
+  | "now"
+  | "cv"
+  | "contact";
 
 export interface SectionMeta {
   id: SectionId;
-  /** DOM id used for anchor links (#section-000 …) */
   anchor: string;
-  /** Zero-padded number shown in the top-left label */
   number: string;
-  /** Display title in the section label */
   title: string;
-  /** Label shown in the centre nav */
   navLabel: string;
+  /** hide from nav (still numbered + anchorable) */
+  navHidden?: boolean;
 }
 
 export const SECTIONS: SectionMeta[] = [
-  { id: "hero", anchor: "section-000", number: "000", title: "Hero", navLabel: "Top" },
+  { id: "hero", anchor: "section-000", number: "000", title: "Hero", navLabel: "Top", navHidden: true },
   { id: "about", anchor: "section-001", number: "001", title: "About", navLabel: "About" },
-  { id: "work", anchor: "section-002", number: "002", title: "Featured Work", navLabel: "Work" },
-  { id: "more", anchor: "section-003", number: "003", title: "More", navLabel: "More" },
-  { id: "contact", anchor: "section-004", number: "004", title: "Contact", navLabel: "Contact" },
+  { id: "tryit", anchor: "section-002", number: "002", title: "Try It", navLabel: "Try It" },
+  { id: "work", anchor: "section-003", number: "003", title: "Featured Work", navLabel: "Work" },
+  { id: "more", anchor: "section-004", number: "004", title: "More", navLabel: "More" },
+  { id: "now", anchor: "section-005", number: "005", title: "Now", navLabel: "Now" },
+  { id: "cv", anchor: "section-006", number: "006", title: "CV", navLabel: "CV", navHidden: true },
+  { id: "contact", anchor: "section-007", number: "007", title: "Contact", navLabel: "Contact" },
 ];
 
 export const SECTION_TOTAL = SECTIONS.length;
