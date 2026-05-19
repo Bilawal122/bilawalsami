@@ -8,12 +8,6 @@ import { HeroDevMode } from "./HeroDevMode";
 
 const meta = SECTIONS[0];
 
-/**
- * Site Review Obs 01 — collapse the hero to a single monumental punch.
- * ASCII is demoted to a background watermark behind the type. Right column
- * removed. Pitch + CTAs sit beneath the type in a single ribbon. The keyboard
- * hint moves to the footer (Obs C).
- */
 export function Hero() {
   return (
     <HeroDevMode>
@@ -24,7 +18,6 @@ export function Hero() {
       >
         <KonamiCode />
 
-        {/* ASCII watermark — full-bleed behind the type */}
         <div
           aria-hidden="true"
           data-print-hide="true"
@@ -40,7 +33,6 @@ export function Hero() {
         </div>
 
         <div className="relative z-10 flex-1 flex flex-col px-6 pt-20 pb-12">
-          {/* top metadata strip */}
           <div className="mt-2 flex items-start justify-between gap-6">
             <p id={`${meta.anchor}-label`} className="label-mono text-ash">
               <span>BILAWAL ULLAH SAMI</span>
@@ -54,7 +46,6 @@ export function Hero() {
             </p>
           </div>
 
-          {/* monumental punch */}
           <div className="flex-1 flex items-center">
             <div className="max-w-[26ch]">
               <p className="label-mono text-ash mb-6">SECTION 000 · HERO</p>
@@ -75,12 +66,11 @@ export function Hero() {
             </div>
           </div>
 
-          {/* bottom ribbon — credit + CTAs */}
           <div className="border-t hairline pt-8 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-6 items-end">
             <div className="mono-sm text-ash max-w-[58ch] leading-[1.55]">
-              <span className="text-bone">Bilawal Ullah Sami</span> — final-year CS, Edge Hill.
+              <span className="text-bone">Bilawal Ullah Sami.</span> Final-year software engineering at Edge Hill.
               <br />
-              Solo-shipped 3 production apps. Runs a profitable e-commerce business.
+              Three apps in production. One Amazon business doing about £100k a year.
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <MagneticButton>

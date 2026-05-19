@@ -8,31 +8,25 @@ interface Template {
   lines: [LineTag, string][];
 }
 
-/**
- * Site Review Obs 06 — "watch-it-write" demo.
- * Three deterministic templates type real JSX into the left pane while the
- * right pane fills in skeleton blocks as tags close. Vanilla JS, ~5KB,
- * offline, no iframe.
- */
 const TEMPLATES: Record<string, Template> = {
   hero: {
     prompt: "a hero for a calorie tracking app that gets out of the way",
     lines: [
       ["tag", '<section className="min-h-screen bg-ink text-bone px-8 py-24">'],
-      ["", '  <p className="label-mono text-ash">SECTION 000 · HERO</p>'],
+      ["", '  <p className="label-mono text-ash">SECTION 000</p>'],
       ["", '  <h1 className="mt-8 font-black text-7xl tracking-tight leading-none">'],
       ["", "    Type what you ate."],
       ["", '    <span className="text-signal"> Get the macros.</span>'],
       ["", "  </h1>"],
       ["preview:title", '  <p className="mt-6 text-lg text-bone/80 max-w-prose">'],
-      ["", "    No database scroll. No barcode hunt. Five seconds,"],
-      ["", "    free-text, the parser tracks the meal."],
+      ["", "    No food database. No barcode hunt. Five seconds,"],
+      ["", "    free text, get your macros back."],
       ["", "  </p>"],
       [
         "preview:btn",
         '  <a href="#try" className="mt-10 inline-block bg-signal text-ink px-6 py-3 label-mono">',
       ],
-      ["", "    TRY IT &nbsp;↓"],
+      ["", "    TRY IT ↓"],
       ["", "  </a>"],
       ["", "</section>"],
     ],
@@ -48,16 +42,16 @@ const TEMPLATES: Record<string, Template> = {
       ["preview:title", '    <p className="label-mono text-ash">FREE</p>'],
       ["", '    <p className="text-4xl font-bold tracking-tight">£0</p>'],
       ["", '    <ul className="mono-sm text-ash space-y-2">'],
-      ["", "      <li>↳ 30 entries / day</li>"],
-      ["preview:sub", "      <li>↳ Manual log</li>"],
-      ["", "      <li>↳ Macros only</li>"],
+      ["", "      <li>30 entries a day</li>"],
+      ["preview:sub", "      <li>Manual log</li>"],
+      ["", "      <li>Macros only</li>"],
       ["", "    </ul>"],
       ["", "  </article>"],
       [
         "",
         '  <article className="bg-ink p-6 flex flex-col gap-3 border-x border-signal/30">',
       ],
-      ["preview:btn", '    <p className="label-mono text-signal">PRO · POPULAR</p>'],
+      ["preview:btn", '    <p className="label-mono text-signal">PRO</p>'],
       ["", '    <p className="text-4xl font-bold tracking-tight">£4 /mo</p>'],
       ["", "  </article>"],
       ["", "</section>"],
@@ -70,13 +64,13 @@ const TEMPLATES: Record<string, Template> = {
       ["preview:title", "  <li>"],
       ["", '    <p className="label-mono text-signal">v0.4.2 · 19 MAY 2026</p>'],
       ["", '    <p className="mt-2 text-bone">'],
-      ["", "      Tally now streams the response — kcal pops first,"],
-      ["", "      macros fill in over 600ms."],
+      ["", "      Tally now streams the parser response. kcal pops first,"],
+      ["", "      the rest fills in over 600ms."],
       ["preview:sub", "    </p>"],
       ["", "  </li>"],
       ["", "  <li>"],
       ["", '    <p className="label-mono text-ash">v0.4.1 · 04 MAY 2026</p>'],
-      ["preview:btn", '    <p className="mt-2 text-bone">Go Ride shipped to client.</p>'],
+      ["preview:btn", '    <p className="mt-2 text-bone">Go Ride shipped to the client.</p>'],
       ["", "  </li>"],
       ["", "</ol>"],
     ],
@@ -102,15 +96,27 @@ function highlight(text: string): string {
   return s;
 }
 
-function plainText(text: string): string {
-  return text;
-}
-
 const CHIPS: { key: keyof typeof TEMPLATES; label: string }[] = [
   { key: "hero", label: "a hero for a calorie tracking app" },
   { key: "pricing", label: "a 3-tier pricing card, free / pro / team" },
   { key: "changelog", label: "a brutalist changelog feed in mono" },
 ];
+
+interface GenerateResponse {
+  jsx?: string;
+  error?: string;
+  remaining?: number;
+  limit?: number;
+}
+
+const PREVIEW_STAGES: Record<string, string> = {
+  title: '<div class="sk title"></div>',
+  sub: '<div class="sk sub"></div>',
+  btn: '<div class="sk btn"></div>',
+  tag: '<div class="sk title" style="opacity:0.4; width:35%"></div>',
+};
+
+const wait = (ms: number) => new Promise<void>((res) => setTimeout(res, ms));
 
 export function AriseCodeDemo() {
   const codeRef = useRef<HTMLPreElement>(null);
@@ -118,79 +124,130 @@ export function AriseCodeDemo() {
   const [promptText, setPromptText] = useState<string>(TEMPLATES.hero.prompt);
   const [status, setStatus] = useState<string>("IDLE");
   const [active, setActive] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const runningRef = useRef<boolean>(false);
   const abortRef = useRef<boolean>(false);
 
   const reset = useCallback(() => {
     if (!codeRef.current || !previewRef.current) return;
     codeRef.current.innerHTML =
-      '<span class="tk-com">// click a chip above to start →</span>';
+      '<span class="tk-com">// pick a chip or hit GENERATE to send a real prompt →</span>';
     previewRef.current.innerHTML =
       '<div class="sk title"></div><div class="sk sub"></div><div class="sk sub" style="width:65%"></div><div class="sk btn"></div>';
     previewRef.current.classList.add("empty");
     setStatus("IDLE");
     setActive(null);
+    setError(null);
   }, []);
 
-  const wait = (ms: number) =>
-    new Promise<void>((res) => {
-      const id = window.setTimeout(res, ms);
-      // mark cancellable via abortRef
-      (wait as unknown as { lastId: number }).lastId = id;
-    });
+  const typeOutLines = useCallback(
+    async (lines: [LineTag, string][]) => {
+      if (!codeRef.current || !previewRef.current) return;
+      for (let i = 0; i < lines.length; i++) {
+        if (abortRef.current) break;
+        const [tag, line] = lines[i];
+        const span = document.createElement("span");
+        codeRef.current.appendChild(span);
+        const html = highlight(line);
+        const plain = line;
+        const caret = document.createElement("span");
+        caret.className = "caret";
+        codeRef.current.appendChild(caret);
 
-  const run = useCallback(async (key: string) => {
+        for (let j = 0; j <= plain.length; j++) {
+          if (abortRef.current) break;
+          span.textContent = plain.slice(0, j);
+          await wait(8 + Math.random() * 14);
+        }
+        if (abortRef.current) break;
+        span.innerHTML = html;
+        span.appendChild(document.createTextNode("\n"));
+        if (codeRef.current.contains(caret)) codeRef.current.removeChild(caret);
+
+        if (tag && tag.startsWith("preview:")) {
+          const k = tag.split(":")[1];
+          if (PREVIEW_STAGES[k] && previewRef.current)
+            previewRef.current.innerHTML += PREVIEW_STAGES[k];
+        } else if (tag === "tag" && previewRef.current) {
+          previewRef.current.innerHTML += PREVIEW_STAGES.tag;
+        }
+      }
+    },
+    [],
+  );
+
+  const runChip = useCallback(
+    async (key: string) => {
+      if (runningRef.current) return;
+      const tmpl = TEMPLATES[key];
+      if (!tmpl || !codeRef.current || !previewRef.current) return;
+      runningRef.current = true;
+      abortRef.current = false;
+      setError(null);
+      setActive(key);
+      setStatus("GENERATING");
+      setPromptText(tmpl.prompt);
+      codeRef.current.innerHTML = "";
+      previewRef.current.innerHTML = "";
+      previewRef.current.classList.remove("empty");
+
+      await typeOutLines(tmpl.lines);
+
+      runningRef.current = false;
+      if (!abortRef.current) setStatus("COMPILED · 0 ERRORS");
+    },
+    [typeOutLines],
+  );
+
+  const runPrompt = useCallback(async () => {
     if (runningRef.current) return;
-    const tmpl = TEMPLATES[key];
-    if (!tmpl || !codeRef.current || !previewRef.current) return;
+    const promptVal = promptText.trim();
+    if (!promptVal || !codeRef.current || !previewRef.current) return;
     runningRef.current = true;
     abortRef.current = false;
-    setActive(key);
-    setStatus("GENERATING…");
-    setPromptText(tmpl.prompt);
+    setError(null);
+    setActive("freeform");
+    setStatus("CALLING GEMINI");
     codeRef.current.innerHTML = "";
     previewRef.current.innerHTML = "";
     previewRef.current.classList.remove("empty");
 
-    const stages: Record<string, string> = {
-      title: '<div class="sk title"></div>',
-      sub: '<div class="sk sub"></div>',
-      btn: '<div class="sk btn"></div>',
-      tag: '<div class="sk title" style="opacity:0.4; width:35%"></div>',
-    };
-
-    for (let i = 0; i < tmpl.lines.length; i++) {
-      if (abortRef.current) break;
-      const [tag, line] = tmpl.lines[i];
-      const span = document.createElement("span");
-      codeRef.current.appendChild(span);
-      const html = highlight(line);
-      const plain = plainText(line);
-      const caret = document.createElement("span");
-      caret.className = "caret";
-      codeRef.current.appendChild(caret);
-
-      for (let j = 0; j <= plain.length; j++) {
-        if (abortRef.current) break;
-        span.textContent = plain.slice(0, j);
-        await wait(8 + Math.random() * 14);
+    try {
+      const res = await fetch("/api/arisecode-demo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: promptVal }),
+      });
+      const json = (await res.json()) as GenerateResponse;
+      if (!res.ok || !json.jsx) {
+        setError(json.error ?? "Generator unavailable.");
+        setStatus("ERROR");
+        runningRef.current = false;
+        return;
       }
-      if (abortRef.current) break;
-      span.innerHTML = html;
-      span.appendChild(document.createTextNode("\n"));
-      if (codeRef.current.contains(caret)) codeRef.current.removeChild(caret);
 
-      if (tag && tag.startsWith("preview:")) {
-        const k = tag.split(":")[1];
-        if (stages[k] && previewRef.current) previewRef.current.innerHTML += stages[k];
-      } else if (tag === "tag" && previewRef.current) {
-        previewRef.current.innerHTML += stages.tag;
-      }
+      // turn the returned JSX into the same line/tag tuples the chips use
+      setStatus("TYPING");
+      const rawLines = json.jsx.split("\n").filter((l) => l.length > 0 || true);
+      const lines: [LineTag, string][] = rawLines.map((line, idx) => {
+        const trimmed = line.trim();
+        if (idx === 0) return ["tag", line];
+        if (idx % 4 === 0) return ["preview:title", line];
+        if (idx % 4 === 2) return ["preview:sub", line];
+        if (trimmed.startsWith("<a") || trimmed.startsWith("<button"))
+          return ["preview:btn", line];
+        return ["", line];
+      });
+
+      await typeOutLines(lines);
+      runningRef.current = false;
+      if (!abortRef.current) setStatus("COMPILED · 0 ERRORS");
+    } catch (e) {
+      runningRef.current = false;
+      setError("Network blip. Try again.");
+      setStatus("ERROR");
     }
-
-    runningRef.current = false;
-    if (!abortRef.current) setStatus("COMPILED · 0 ERRORS");
-  }, []);
+  }, [promptText, typeOutLines]);
 
   useEffect(() => {
     reset();
@@ -208,33 +265,41 @@ export function AriseCodeDemo() {
             className="h-2 w-2 bg-signal inline-block"
             style={{ animation: "pulseDot 1.5s ease-in-out infinite" }}
           />
-          LIVE DEMO · ARISECODE · WATCH IT WRITE
+          LIVE DEMO · ARISECODE
         </p>
         <p className="label-mono text-hairline">{status}</p>
       </div>
 
-      {/* mock prompt */}
-      <div className="px-4 py-3 border-b hairline flex items-center gap-2">
+      {/* editable prompt */}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          runPrompt();
+        }}
+        className="px-4 py-3 border-b hairline flex items-center gap-2"
+      >
         <span className="label-mono text-signal">▌</span>
         <input
-          aria-label="AriseCode prompt (read-only demo)"
+          aria-label="AriseCode prompt"
           value={promptText}
-          readOnly
-          className="flex-1 bg-transparent border-0 outline-none mono-sm text-bone"
+          onChange={(e) => setPromptText(e.target.value)}
+          maxLength={200}
+          className="flex-1 bg-transparent border-0 outline-none mono-sm text-bone placeholder:text-hairline"
+          placeholder="describe a section you want"
         />
         <button
-          type="button"
+          type="submit"
           data-cursor="hover"
-          onClick={() => run("hero")}
-          className="label-mono bg-signal text-ink px-3 py-1.5 hover:bg-signal-dim transition-colors"
+          disabled={runningRef.current}
+          className="label-mono bg-signal text-ink px-3 py-1.5 hover:bg-signal-dim transition-colors disabled:opacity-40"
         >
           GENERATE ↵
         </button>
-      </div>
+      </form>
 
       {/* chips */}
       <div className="px-4 py-3 border-b hairline flex flex-wrap gap-2 items-center">
-        <span className="label-mono text-hairline">TRY:</span>
+        <span className="label-mono text-hairline">OR PICK:</span>
         {CHIPS.map((c) => {
           const on = active === c.key;
           return (
@@ -242,7 +307,10 @@ export function AriseCodeDemo() {
               key={c.key}
               type="button"
               data-cursor="hover"
-              onClick={() => run(c.key)}
+              onClick={() => {
+                setPromptText(TEMPLATES[c.key].prompt);
+                runChip(c.key);
+              }}
               className={`label-mono border px-3 py-1.5 transition-colors ${
                 on
                   ? "border-signal text-signal"
@@ -255,11 +323,17 @@ export function AriseCodeDemo() {
         })}
       </div>
 
+      {error && (
+        <p className="px-4 py-3 border-b hairline label-mono text-blood" role="alert">
+          {error.toUpperCase()}
+        </p>
+      )}
+
       {/* split panes */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="md:border-r hairline">
           <div className="px-3 py-2 border-b hairline flex items-center justify-between">
-            <span className="label-mono text-ash">HERO.TSX</span>
+            <span className="label-mono text-ash">SECTION.TSX</span>
             <span className="flex gap-1.5">
               <i className="w-2 h-2 bg-hairline inline-block rounded-full" />
               <i className="w-2 h-2 bg-hairline inline-block rounded-full" />
@@ -268,7 +342,7 @@ export function AriseCodeDemo() {
           </div>
           <pre
             ref={codeRef}
-            className="arise-code overflow-hidden text-bone p-3 m-0 whitespace-pre min-h-[240px]"
+            className="arise-code overflow-auto text-bone p-3 m-0 whitespace-pre min-h-[240px] max-h-[420px]"
             style={{ fontFamily: "var(--font-geist-mono)", fontSize: "12px", lineHeight: 1.55 }}
           />
         </div>

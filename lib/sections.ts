@@ -1,7 +1,6 @@
 /**
- * Canonical section metadata for the redesign branch.
- * Order driven by Site Review (Obs 02 hoists Tally to a TRY IT, Obs 05 inlines
- * the CV, Obs 07 reinstates Now as a status board).
+ * Canonical section metadata. Section 005 used to be the status-board "Now";
+ * it's now a personal changelog of things shipped.
  */
 export type SectionId =
   | "hero"
@@ -9,7 +8,7 @@ export type SectionId =
   | "tryit"
   | "work"
   | "more"
-  | "now"
+  | "log"
   | "cv"
   | "contact";
 
@@ -19,7 +18,6 @@ export interface SectionMeta {
   number: string;
   title: string;
   navLabel: string;
-  /** hide from nav (still numbered + anchorable) */
   navHidden?: boolean;
 }
 
@@ -27,9 +25,9 @@ export const SECTIONS: SectionMeta[] = [
   { id: "hero", anchor: "section-000", number: "000", title: "Hero", navLabel: "Top", navHidden: true },
   { id: "about", anchor: "section-001", number: "001", title: "About", navLabel: "About" },
   { id: "tryit", anchor: "section-002", number: "002", title: "Try It", navLabel: "Try It" },
-  { id: "work", anchor: "section-003", number: "003", title: "Featured Work", navLabel: "Work" },
+  { id: "work", anchor: "section-003", number: "003", title: "Work", navLabel: "Work" },
   { id: "more", anchor: "section-004", number: "004", title: "More", navLabel: "More" },
-  { id: "now", anchor: "section-005", number: "005", title: "Now", navLabel: "Now" },
+  { id: "log", anchor: "section-005", number: "005", title: "Changelog", navLabel: "Log" },
   { id: "cv", anchor: "section-006", number: "006", title: "CV", navLabel: "CV", navHidden: true },
   { id: "contact", anchor: "section-007", number: "007", title: "Contact", navLabel: "Contact" },
 ];

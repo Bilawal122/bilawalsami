@@ -15,10 +15,6 @@ const ROLE_CHIPS = [
   { id: "other", label: "OTHER", subject: "Quick chat" },
 ] as const;
 
-/**
- * Site Review note E — role chip selector above the email link. Click sets
- * the mailto subject prefix. Removes typing, increases conversion.
- */
 export function Contact() {
   const [chip, setChip] = useState<(typeof ROLE_CHIPS)[number]>(ROLE_CHIPS[0]);
   const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(`From bilawalsami.vercel.app — ${chip.subject}`)}`;
@@ -42,7 +38,7 @@ export function Contact() {
         </p>
 
         <div className="flex flex-wrap justify-center gap-2">
-          <span className="label-mono text-hairline self-center mr-2">WHEN YOU EMAIL ME:</span>
+          <span className="label-mono text-hairline self-center mr-2">PICK A REASON:</span>
           {ROLE_CHIPS.map((c) => {
             const on = c.id === chip.id;
             return (
@@ -82,8 +78,8 @@ export function Contact() {
         </a>
 
         <p className="mono-sm text-ash max-w-[55ch]">
-          Subject pre-fills with{" "}
-          <span className="text-bone">{`"From bilawalsami.vercel.app — ${chip.subject}"`}</span>. Replies within a day, usually faster.
+          Subject will be{" "}
+          <span className="text-bone">{`"From bilawalsami.vercel.app — ${chip.subject}"`}</span>. I usually reply same day, sometimes within the hour.
         </p>
 
         <ul className="mt-6 grid gap-6 sm:grid-cols-2 w-full max-w-[700px]">
@@ -103,7 +99,7 @@ export function Contact() {
             <span className="label-mono text-hairline">CV.PDF</span>
             <a
               href="/cv/Bilawal-Ullah-Sami-CV.pdf"
-              download
+              download="Bilawal-Ullah-Sami-CV.pdf"
               data-cursor="hover"
               className="label-mono text-bone hover:text-signal transition-colors"
             >

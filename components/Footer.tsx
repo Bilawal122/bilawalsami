@@ -15,7 +15,10 @@ export function Footer() {
             aria-hidden="true"
           />
         </p>
-        <p className="label-mono text-hairline flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+        <p
+          data-print-hide="true"
+          className="label-mono text-hairline flex flex-wrap items-center justify-center gap-x-3 gap-y-1"
+        >
           <span>EASTER EGGS</span>
           <span className="text-ash">·</span>
           <span>TYPE YOUR NAME</span>

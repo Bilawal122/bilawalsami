@@ -3,10 +3,6 @@ import { FEATURED } from "@/lib/projects";
 
 const p = FEATURED.find((x) => x.id === "tally")!;
 
-/**
- * Tally chapter in Featured Work. The interactive demo has been hoisted to
- * the TRY IT section above; this chapter is now the narrative + context.
- */
 export function Tally() {
   return (
     <article
@@ -45,22 +41,11 @@ export function Tally() {
       </header>
 
       <div className="flex flex-col gap-10">
-        <a
-          href="#section-002"
-          data-cursor="hover"
-          className="block border hairline bg-steel p-5 hover:border-signal transition-colors"
-        >
-          <p className="label-mono text-signal mb-2">↑ DEMO MOVED · TRY IT 001/001</p>
-          <p className="text-bone" style={{ fontSize: "1rem", lineHeight: 1.5 }}>
-            The inline macro estimator was hoisted out of this chapter so a recruiter touches it first. The full chapter context lives below.
-          </p>
-        </a>
-
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-hairline border hairline">
-          <Stat label="PARSE" value="<800ms" sub="p50 stub mode" />
+          <Stat label="PARSE" value="<800ms" sub="median, no cold start" />
           <Stat label="LIMIT" value="5/MIN" sub="upstash sliding window" />
           <Stat label="PAYWALL" value="REVENUECAT" sub="onboarding + entitlements" />
-          <Stat label="LIVE" value="APP STORE" sub="released 2024" />
+          <Stat label="LIVE ON" value="APP STORE" sub="released 2024" />
         </div>
 
         <div>

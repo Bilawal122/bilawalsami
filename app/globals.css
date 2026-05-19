@@ -169,33 +169,79 @@
    ============================================================ */
 
 @media print {
+  /* invert the whole dark theme so the page prints as ink on white */
   html,
-  body {
+  body,
+  body * {
     background: #ffffff !important;
     color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
-  /* drop decorative chrome */
+  /* keep the cv sheet on its cream background so it reads as a CV */
+  .cv-sheet,
+  .cv-sheet * {
+    background: #f2efe8 !important;
+    color: #1a1a1a !important;
+  }
+  /* drop the dark hairline borders to a printable grey */
+  *,
+  *::before,
+  *::after {
+    border-color: #cccccc !important;
+  }
+  /* drop decorative chrome that doesn't translate to paper */
   [data-print-hide="true"],
   canvas,
   video,
   iframe,
+  audio,
+  form,
+  input,
+  textarea,
+  button,
   .grain-overlay,
-  .custom-cursor {
+  .custom-cursor,
+  kbd {
     display: none !important;
   }
+  /* underline + spell out external links */
   a {
     color: #000000 !important;
     text-decoration: underline;
   }
-  /* spell out hrefs after links so they survive print */
   a[href^="http"]::after,
   a[href^="mailto:"]::after {
     content: " (" attr(href) ")";
     font-size: 0.75em;
     color: #444;
   }
+  /* allow long sections to flow across pages */
   section {
-    break-inside: avoid;
-    page-break-inside: avoid;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  /* avoid orphaned headings */
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  /* trim the long-form fonts so a printable page fits more */
+  h1 {
+    font-size: 36pt !important;
+    line-height: 1.05 !important;
+  }
+  h2 {
+    font-size: 22pt !important;
+    line-height: 1.1 !important;
+  }
+  h3 {
+    font-size: 16pt !important;
+    line-height: 1.15 !important;
+  }
+  @page {
+    margin: 12mm;
   }
 }

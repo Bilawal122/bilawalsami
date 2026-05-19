@@ -43,8 +43,8 @@ export function NoteSnap() {
       <div className="flex flex-col gap-10">
         <div className="grid grid-cols-3 gap-px bg-hairline border hairline">
           <Stat label="DISSERTATION" value="108pp" sub="predicted first" />
-          <Stat label="SOURCES" value="6" sub="PDF · DOCX · YT · URL · camera · PPTX" />
-          <Stat label="TOOLS" value="6" sub="flashcards · quizzes · tutor · SM-2" />
+          <Stat label="SOURCES" value="6" sub="PDF, DOCX, YT, URL, camera, PPTX" />
+          <Stat label="TOOLS" value="6" sub="flashcards, quizzes, tutor, SM-2" />
         </div>
 
         <div>

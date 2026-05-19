@@ -4,13 +4,6 @@ import { SECTIONS, SECTION_TOTAL } from "@/lib/sections";
 
 const meta = SECTIONS.find((s) => s.id === "more")!;
 
-/**
- * Site Review Obs 03 — More rendered as an editorial index, not a card grid.
- * Asymmetric row: id · status tick · name · desc · stack · arrow.
- * Sorted by recruiter relevance (LIVE first, IN DEV last). LIVE cards get
- * heavier name type so the eye walks down the page.
- */
-
 const ORDER = ["LIVE", "CLIENT", "BETA", "BUSINESS", "ACADEMIC", "IN DEV"] as const;
 
 const tickClass = (status: string) => {
@@ -82,7 +75,7 @@ export function More() {
                 </span>
                 <span className="mono-sm text-ash hidden lg:block">{card.stack}</span>
                 <span aria-hidden="true" className="label-mono text-hairline text-right">
-                  ↗
+                  ·
                 </span>
               </li>
             );
@@ -98,9 +91,6 @@ export function More() {
           </span>
           <span className="inline-flex items-center gap-2">
             <i className="w-2.5 h-2.5 border hairline" aria-hidden="true" /> ACADEMIC / IN DEV / BUSINESS
-          </span>
-          <span className="ml-auto text-hairline hidden md:inline">
-            SORTED BY RECRUITER RELEVANCE — STATUS &gt; RECENCY
           </span>
         </div>
       </div>
